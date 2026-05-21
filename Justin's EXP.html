@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习升级</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:linear-gradient(160deg,#0f0929,#1e1060);color:#fff;font-family:-apple-system,sans-serif;min-height:100vh;padding:16px 16px 80px}
+.wrap{max-width:420px;margin:0 auto}
+.hero{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,217,61,0.3);border-radius:16px;padding:12px;margin-bottom:14px}
+.av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#ff4d8d,#ff8c42);display:flex;align-items:center;justify-content:center;font-size:28px;border:2.5px solid #ffd93d;flex-shrink:0}
+.hero-name{font-size:18px;font-weight:800}
+.hero-sub{font-size:11px;color:#9b8ec4;margin-top:2px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 13px;border-radius:11px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:5px;border:2px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.07);color:#9b8ec4;white-space:nowrap}
+.tab.on{background:#ffd93d;color:#0f0929;border-color:#ffd93d}
+.tab-add{flex-shrink:0;padding:8px 13px;border-radius:11px;background:rgba(255,255,255,0.06);border:2px dashed rgba(255,255,255,0.2);color:#9b8ec4;font-size:18px}
+.card{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,217,61,0.2);border-radius:20px;padding:20px 16px;margin-bottom:14px}
+.lv-label{text-align:center;font-size:10px;color:#ffd93d;letter-spacing:3px;margin-bottom:4px}
+.lv-num{text-align:center;font-size:72px;font-weight:900;color:#ffd93d;line-height:1;text-shadow:0 0 20px #ffd93d,0 4px 0 #c9a000;margin-bottom:16px}
+.xp-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9b8ec4;margin-bottom:5px}
+.xp-cur{color:#ffd93d;font-size:13px;font-weight:700}
+.edit-xp{background:rgba(255,217,61,0.15);border:1px solid rgba(255,217,61,0.4);border-radius:6px;color:#ffd93d;font-size:11px;padding:2px 8px;cursor:pointer}
+.bar-bg{height:24px;background:rgba(0,0,0,0.4);border:1.5px solid rgba(255,217,61,0.25);border-radius:12px;overflow:hidden;position:relative;margin-bottom:16px}
+.bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#51e898,#4dd4ff,#ffd93d);border-radius:10px;transition:width 0.5s;box-shadow:0 0 12px rgba(255,217,61,0.4)}
+.bar-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;font-weight:900;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.9)}
+.timer-wrap{text-align:center;margin-bottom:20px}
+.timer-lbl{font-size:11px;color:#9b8ec4;margin-bottom:3px}
+.timer{font-size:40px;font-weight:900;letter-spacing:4px;color:#4dd4ff;text-shadow:0 0 12px #4dd4ff}
+.timer.paused{color:#ff8c42;text-shadow:0 0 12px #ff8c42}
+.btns{display:flex;gap:10px}
+.btn{flex:1;padding:15px 4px;border:none;border-radius:13px;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;-webkit-appearance:none;cursor:pointer}
+.btn:disabled{background:rgba(255,255,255,0.08)!important;color:#555!important;box-shadow:none!important}
+.btn-s{background:#2ec472;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
+.btn-p{background:#d96a1a;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
+.btn-e{background:#cc2060;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
+.hist-card{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:14px}
+.hist-title{font-size:15px;font-weight:800;color:#ffd93d;margin-bottom:10px}
+.hist-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px}
+.hist-row:last-child{border-bottom:none}
+.hist-dt{color:#9b8ec4}.hist-val{color:#ffd93d;font-weight:700}
+#lvup{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center}
+#lvup.show{display:flex}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:50;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#1e1060;border:2px solid #ffd93d;border-radius:18px;padding:22px;width:100%;max-width:320px}
+.modal-title{font-size:18px;font-weight:900;color:#ffd93d;text-align:center;margin-bottom:14px}
+.modal input{width:100%;padding:10px 13px;background:rgba(0,0,0,0.3);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:15px;margin-bottom:10px;outline:none;-webkit-appearance:none;display:block}
+.grid{display:grid;gap:6px;margin-bottom:14px}
+.g6{grid-template-columns:repeat(6,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.pi{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:rgba(255,255,255,0.06);border:2px solid transparent}
+.pi.sel{background:rgba(255,217,61,0.25);border-color:#ffd93d}
+.mbtns{display:flex;gap:8px}
+.mbtn{flex:1;padding:11px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;-webkit-appearance:none}
+.mbtn-c{background:rgba(255,255,255,0.1);color:#fff}
+.mbtn-o{background:#ffd93d;color:#0f0929}
+.mbtn-d{background:#cc2060;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero" id="heroEl">
+    <div class="av" id="avEl">🦊</div>
+    <div>
+      <div class="hero-name" id="nameEl">小冒险家 <span style="font-size:13px;opacity:0.4">✏️</span></div>
+      <div class="hero-sub" id="subEl">今日学习 0 分钟</div>
+    </div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="card">
+    <div class="lv-label" id="lvLabel">📖 语文 · LEVEL</div>
+    <div class="lv-num" id="lvNum">1</div>
+    <div class="xp-row">
+      <span class="xp-cur" id="xpCur">0 XP</span>
+      <span id="xpMax">/ 1800 XP</span>
+      <span class="edit-xp" onclick="openEditXP()">手动修改</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" id="barFill"></div><div class="bar-pct" id="barPct">0%</div></div>
+    <div class="timer-wrap">
+      <div class="timer-lbl">本次学习</div>
+      <div class="timer" id="timerEl">00:00</div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-s" id="btnS" onclick="doStart()">开始</button>
+      <button class="btn btn-p" id="btnP" onclick="doPause()" disabled>暂停</button>
+      <button class="btn btn-e" id="btnE" onclick="doStop()"  disabled>结束</button>
+    </div>
+  </div>
+  <div class="hist-card">
+    <div class="hist-title">📅 历史记录</div>
+    <div id="histList"></div>
+  </div>
+</div>
+
+<div id="lvup" onclick="this.classList.remove('show')">
+  <div style="font-size:44px;font-weight:900;color:#ffd93d;text-shadow:0 0 30px #ffd93d">LEVEL UP! 🎉</div>
+  <div style="font-size:24px;color:#fff">升到 <span style="color:#ffd93d;font-size:56px;font-weight:900" id="lvupNum">2</span> 级！</div>
+  <div style="font-size:13px;color:#aaa;margin-top:8px">点击继续</div>
+</div>
+
+<div class="modal-bg" id="profileModal">
+  <div class="modal">
+    <div class="modal-title">✨ 我的角色</div>
+    <input id="nameIn" maxlength="10" placeholder="名字">
+    <div class="grid g6" id="avPicker"></div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-c" onclick="closeM('profileModal')">取消</button>
+      <button class="mbtn mbtn-o" onclick="saveProfile()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="subModal">
+  <div class="modal">
+    <div class="modal-title">📚 添加科目</div>
+    <input id="subNameIn" maxlength="6" placeholder="科目名称（如：英语）">
+    <div class="grid g5" id="icPicker"></div>
+    <div class="mbtns">
+      <button class="mbtn mbtn-c" onclick="closeM('subModal')">取消</button>
+      <button class="mbtn mbtn-o" onclick="addSub()">添加</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="xpModal">
+  <div class="modal">
+    <div class="modal-title">⚡ 修改经验值</div>
+    <div style="color:#9b8ec4;font-size:13px;margin-bottom:10px;text-align:center">直接设置当前经验和等级</div>
+    <div style="color:#ffd93d;font-size:12px;margin-bottom:4px">等级</div>
+    <input id="lvIn" type="number" min="1" max="999" placeholder="等级">
+    <div style="color:#ffd93d;font-size:12px;margin-bottom:4px">当前经验 (0 ~ 1800)</div>
+    <input id="xpIn" type="number" min="0" max="1800" placeholder="经验值">
+    <div class="mbtns">
+      <button class="mbtn mbtn-c" onclick="closeM('xpModal')">取消</button>
+      <button class="mbtn mbtn-d" onclick="resetSubject()">重置为0</button>
+      <button class="mbtn mbtn-o" onclick="saveXP()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var AVATARS=['🦊','🐻','🐼','🦁','🐯','🐨','🐰','🦄','🐲','🦖','🐙','🦉','🐢','🦋','⭐','🚀','👑','🎓','🧙','🦸'];
+var ICONS=['📖','📐','🔬','🌍','🎨','🎵','💻','⚽','🧮','📝'];
+var XP_PER_LEVEL=1800;
+
+function load(){try{var r=localStorage.getItem('lq6');if(r)return Object.assign(def(),JSON.parse(r));}catch(e){}return def();}
+function def(){return{name:'小冒险家',avatar:'🦊',active:0,subjects:[{name:'语文',icon:'📖',lv:1,xp:0},{name:'数学',icon:'📐',lv:1,xp:0}],history:[]};}
+function save(){try{localStorage.setItem('lq6',JSON.stringify(D));}catch(e){}}
+function today(){return new Date().toLocaleDateString('zh-CN');}
+
+var D=load();var status='stop';var secs=0;var iv=null;var subjIdx=null;
+
+function render(){
+  var s=D.subjects[D.active]||D.subjects[0];
+  document.getElementById('avEl').textContent=D.avatar;
+  document.getElementById('nameEl').innerHTML=D.name+' <span style="font-size:13px;opacity:0.4">✏️</span>';
+  var tdMins=D.history.filter(function(h){return h.date===today();}).reduce(function(a,h){return a+h.mins;},0);
+  document.getElementById('subEl').textContent='今日学习 '+tdMins+' 分钟';
+  var tabs=document.getElementById('tabs');tabs.innerHTML='';
+  D.subjects.forEach(function(sub,i){
+    var el=document.createElement('div');el.className='tab'+(i===D.active?' on':'');
+    el.textContent=sub.icon+' '+sub.name+' Lv'+sub.lv;
+    el.onclick=function(){switchSub(i);};tabs.appendChild(el);
+  });
+  var add=document.createElement('div');add.className='tab-add';add.textContent='＋';
+  add.onclick=openSubModal;tabs.appendChild(add);
+  var pct=Math.min(100,(s.xp/XP_PER_LEVEL)*100);
+  document.getElementById('lvLabel').textContent=s.icon+' '+s.name+' · LEVEL';
+  document.getElementById('lvNum').textContent=s.lv;
+  document.getElementById('xpCur').textContent=s.xp+' XP';
+  document.getElementById('xpMax').textContent='/ '+XP_PER_LEVEL+' XP';
+  document.getElementById('barFill').style.width=pct+'%';
+  document.getElementById('barPct').textContent=Math.floor(pct)+'%';
+  var hl=document.getElementById('histList');hl.innerHTML='';
+  var rev=D.history.slice().reverse().slice(0,8);
+  if(rev.length===0){hl.innerHTML='<div style="color:#9b8ec4;font-size:13px">还没有记录，快开始学习吧~</div>';return;}
+  rev.forEach(function(h){
+    var row=document.createElement('div');row.className='hist-row';
+    row.innerHTML='<span class="hist-dt">'+h.date+' · '+h.subject+'</span><span class="hist-val">'+h.mins+' 分钟</span>';
+    hl.appendChild(row);
+  });
+}
+function renderTimer(){
+  var mm=String(Math.floor(secs/60)).padStart(2,'0');var ss=String(secs%60).padStart(2,'0');
+  var el=document.getElementById('timerEl');el.textContent=mm+':'+ss;
+  el.className='timer'+(status==='pause'?' paused':'');
+}
+function renderBtns(){
+  document.getElementById('btnS').disabled=status==='run';
+  document.getElementById('btnS').textContent=status==='run'?'学习中':'开始';
+  document.getElementById('btnP').disabled=status==='stop';
+  document.getElementById('btnP').textContent=status==='pause'?'继续':'暂停';
+  document.getElementById('btnE').disabled=status==='stop';
+}
+function tick(){
+  secs++;var s=D.subjects[subjIdx];
+  if(s){
+    s.xp++;
+    if(s.xp>=XP_PER_LEVEL){
+      s.xp=0;s.lv++;
+      document.getElementById('lvupNum').textContent=s.lv;
+      document.getElementById('lvup').classList.add('show');
+      setTimeout(function(){document.getElementById('lvup').classList.remove('show');},2500);
+    }
+  }
+  renderTimer();render();
+}
+function doStart(){if(status==='stop'){secs=0;subjIdx=D.active;}clearInterval(iv);iv=setInterval(tick,1000);status='run';renderBtns();renderTimer();}
+function doPause(){if(status==='run'){clearInterval(iv);status='pause';}else if(status==='pause'){clearInterval(iv);iv=setInterval(tick,1000);status='run';}renderBtns();renderTimer();}
+function doStop(){
+  clearInterval(iv);
+  if(secs>0&&subjIdx!==null){
+    var name=D.subjects[subjIdx]?D.subjects[subjIdx].name:'';
+    D.history.push({date:today(),subject:name,mins:Math.round(secs/60)||1});
+    if(D.history.length>60)D.history=D.history.slice(-60);
+  }
+  secs=0;status='stop';subjIdx=null;save();render();renderTimer();renderBtns();
+}
+function switchSub(i){
+  if(status!=='stop'&&!confirm('切换科目会停止计时，确认吗？'))return;
+  if(status!=='stop')doStop();D.active=i;save();render();
+}
+function openEditXP(){
+  var s=D.subjects[D.active];
+  document.getElementById('lvIn').value=s.lv;document.getElementById('xpIn').value=s.xp;
+  document.getElementById('xpModal').classList.add('show');
+}
+function saveXP(){
+  var s=D.subjects[D.active];
+  var lv=parseInt(document.getElementById('lvIn').value)||1;
+  var xp=parseInt(document.getElementById('xpIn').value)||0;
+  s.lv=Math.max(1,lv);s.xp=Math.max(0,Math.min(XP_PER_LEVEL-1,xp));
+  save();render();closeM('xpModal');
+}
+function resetSubject(){var s=D.subjects[D.active];s.lv=1;s.xp=0;save();render();closeM('xpModal');}
+var selAv='🦊';
+function openProfile(){
+  document.getElementById('nameIn').value=D.name;selAv=D.avatar;
+  var pk=document.getElementById('avPicker');pk.innerHTML='';
+  AVATARS.forEach(function(a){
+    var el=document.createElement('div');el.className='pi'+(a===selAv?' sel':'');el.textContent=a;
+    el.onclick=function(){selAv=a;document.querySelectorAll('#avPicker .pi').forEach(function(x){x.classList.remove('sel');});el.classList.add('sel');};
+    pk.appendChild(el);
+  });
+  document.getElementById('profileModal').classList.add('show');
+}
+function saveProfile(){var n=document.getElementById('nameIn').value.trim();if(n)D.name=n;D.avatar=selAv;save();render();closeM('profileModal');}
+var selIc='📖';
+function openSubModal(){
+  document.getElementById('subNameIn').value='';selIc='📖';
+  var pk=document.getElementById('icPicker');pk.innerHTML='';
+  ICONS.forEach(function(ic){
+    var el=document.createElement('div');el.className='pi'+(ic===selIc?' sel':'');el.textContent=ic;el.style.fontSize='24px';
+    el.onclick=function(){selIc=ic;document.querySelectorAll('#icPicker .pi').forEach(function(x){x.classList.remove('sel');});el.classList.add('sel');};
+    pk.appendChild(el);
+  });
+  document.getElementById('subModal').classList.add('show');
+}
+function addSub(){
+  var n=document.getElementById('subNameIn').value.trim();
+  if(!n){alert('请输入科目名称');return;}
+  D.subjects.push({name:n,icon:selIc,lv:1,xp:0});D.active=D.subjects.length-1;
+  save();render();closeM('subModal');
+}
+function closeM(id){document.getElementById(id).classList.remove('show');}
+document.getElementById('heroEl').onclick=openProfile;
+render();renderTimer();renderBtns();
+</script>
+</body>
+</html>
