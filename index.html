@@ -1,273 +1,1066 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>学习升级</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>Justin 的学习历险 · GD Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:linear-gradient(160deg,#0f0929,#1e1060);color:#fff;font-family:-apple-system,sans-serif;min-height:100vh;padding:16px 16px 80px}
-.wrap{max-width:420px;margin:0 auto}
-.hero{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,217,61,0.3);border-radius:16px;padding:12px;margin-bottom:14px}
-.av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#ff4d8d,#ff8c42);display:flex;align-items:center;justify-content:center;font-size:28px;border:2.5px solid #ffd93d;flex-shrink:0}
-.hero-name{font-size:18px;font-weight:800}
-.hero-sub{font-size:11px;color:#9b8ec4;margin-top:2px}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:8px 13px;border-radius:11px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:5px;border:2px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.07);color:#9b8ec4;white-space:nowrap}
-.tab.on{background:#ffd93d;color:#0f0929;border-color:#ffd93d}
-.tab-add{flex-shrink:0;padding:8px 13px;border-radius:11px;background:rgba(255,255,255,0.06);border:2px dashed rgba(255,255,255,0.2);color:#9b8ec4;font-size:18px}
-.card{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,217,61,0.2);border-radius:20px;padding:20px 16px;margin-bottom:14px}
-.lv-label{text-align:center;font-size:10px;color:#ffd93d;letter-spacing:3px;margin-bottom:4px}
-.lv-num{text-align:center;font-size:72px;font-weight:900;color:#ffd93d;line-height:1;text-shadow:0 0 20px #ffd93d,0 4px 0 #c9a000;margin-bottom:16px}
-.xp-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9b8ec4;margin-bottom:5px}
-.xp-cur{color:#ffd93d;font-size:13px;font-weight:700}
-.edit-xp{background:rgba(255,217,61,0.15);border:1px solid rgba(255,217,61,0.4);border-radius:6px;color:#ffd93d;font-size:11px;padding:2px 8px;cursor:pointer}
-.bar-bg{height:24px;background:rgba(0,0,0,0.4);border:1.5px solid rgba(255,217,61,0.25);border-radius:12px;overflow:hidden;position:relative;margin-bottom:16px}
-.bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#51e898,#4dd4ff,#ffd93d);border-radius:10px;transition:width 0.5s;box-shadow:0 0 12px rgba(255,217,61,0.4)}
-.bar-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;font-weight:900;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.9)}
-.timer-wrap{text-align:center;margin-bottom:20px}
-.timer-lbl{font-size:11px;color:#9b8ec4;margin-bottom:3px}
-.timer{font-size:40px;font-weight:900;letter-spacing:4px;color:#4dd4ff;text-shadow:0 0 12px #4dd4ff}
-.timer.paused{color:#ff8c42;text-shadow:0 0 12px #ff8c42}
-.btns{display:flex;gap:10px}
-.btn{flex:1;padding:15px 4px;border:none;border-radius:13px;font-size:16px;font-weight:900;letter-spacing:1px;color:#fff;-webkit-appearance:none;cursor:pointer}
-.btn:disabled{background:rgba(255,255,255,0.08)!important;color:#555!important;box-shadow:none!important}
-.btn-s{background:#2ec472;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
-.btn-p{background:#d96a1a;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
-.btn-e{background:#cc2060;box-shadow:0 5px 0 rgba(0,0,0,0.35)}
-.hist-card{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:14px}
-.hist-title{font-size:15px;font-weight:800;color:#ffd93d;margin-bottom:10px}
-.hist-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px}
-.hist-row:last-child{border-bottom:none}
-.hist-dt{color:#9b8ec4}.hist-val{color:#ffd93d;font-weight:700}
-#lvup{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center}
-#lvup.show{display:flex}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:50;align-items:center;justify-content:center;padding:20px}
-.modal-bg.show{display:flex}
-.modal{background:#1e1060;border:2px solid #ffd93d;border-radius:18px;padding:22px;width:100%;max-width:320px}
-.modal-title{font-size:18px;font-weight:900;color:#ffd93d;text-align:center;margin-bottom:14px}
-.modal input{width:100%;padding:10px 13px;background:rgba(0,0,0,0.3);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:15px;margin-bottom:10px;outline:none;-webkit-appearance:none;display:block}
-.grid{display:grid;gap:6px;margin-bottom:14px}
-.g6{grid-template-columns:repeat(6,1fr)}
-.g5{grid-template-columns:repeat(5,1fr)}
-.pi{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;background:rgba(255,255,255,0.06);border:2px solid transparent}
-.pi.sel{background:rgba(255,217,61,0.25);border-color:#ffd93d}
-.mbtns{display:flex;gap:8px}
-.mbtn{flex:1;padding:11px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;-webkit-appearance:none}
-.mbtn-c{background:rgba(255,255,255,0.1);color:#fff}
-.mbtn-o{background:#ffd93d;color:#0f0929}
-.mbtn-d{background:#cc2060;color:#fff}
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg-0: #0a0420;
+    --bg-1: #150a35;
+    --bg-2: #1e0f4a;
+    --neon-cyan: #00f0ff;
+    --neon-pink: #ff2d92;
+    --neon-yellow: #ffd60a;
+    --neon-green: #00ff88;
+    --neon-purple: #b537f2;
+    --neon-orange: #ff6b35;
+    --text: #ffffff;
+    --text-dim: rgba(255,255,255,0.6);
+  }
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--bg-0);
+    color: var(--text);
+    font-family: 'Noto Sans SC', 'Russo One', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top, #2a1170 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, #4a0e6e 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-0) 100%);
+    min-height: 100vh;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    position: relative;
+  }
+  /* Grid floor backdrop - GD signature */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
+  }
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 999;
+    mix-blend-mode: overlay;
+  }
+  main { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding-top: 16px; }
+
+  /* User card */
+  .user-card {
+    background: linear-gradient(135deg, rgba(0,240,255,0.12), rgba(181,55,242,0.12));
+    border: 2px solid rgba(0, 240, 255, 0.4);
+    border-radius: 18px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.2), inset 0 0 16px rgba(181, 55, 242, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .user-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
+    animation: shimmer 4s linear infinite;
+  }
+  @keyframes shimmer { to { transform: translateX(50%); } }
+  .avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neon-orange), var(--neon-pink));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    border: 3px solid var(--neon-yellow);
+    box-shadow: 0 0 16px var(--neon-yellow);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .user-info { position: relative; z-index: 1; }
+  .user-name {
+    font-family: 'Russo One', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px var(--neon-cyan);
+  }
+  .user-sub { color: var(--text-dim); font-size: 13px; margin-top: 2px; }
+
+  /* Subject tabs */
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0;
+    overflow-x: auto;
+    padding: 4px 2px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto;
+    padding: 12px 20px;
+    background: rgba(20, 10, 50, 0.6);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+    backdrop-filter: blur(10px);
+  }
+  .tab.active {
+    background: linear-gradient(135deg, var(--neon-yellow), var(--neon-orange));
+    color: #1a0030;
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 20px var(--neon-yellow), 0 4px 0 rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Main level card */
+  .level-card {
+    background: linear-gradient(180deg, rgba(30, 15, 74, 0.8), rgba(20, 10, 50, 0.9));
+    border: 2px solid var(--neon-purple);
+    border-radius: 22px;
+    padding: 24px 20px;
+    margin-bottom: 18px;
+    box-shadow:
+      0 0 32px rgba(181, 55, 242, 0.3),
+      inset 0 0 24px rgba(0, 240, 255, 0.05),
+      0 8px 0 rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  .level-header {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    letter-spacing: 6px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .level-header .subject-emoji { font-size: 20px; vertical-align: middle; margin-right: 6px; }
+  .level-number {
+    font-family: 'Russo One', sans-serif;
+    font-size: 120px;
+    text-align: center;
+    color: var(--neon-yellow);
+    text-shadow:
+      0 0 20px var(--neon-yellow),
+      0 0 40px var(--neon-orange),
+      4px 4px 0 #c4860a;
+    line-height: 1;
+    margin: 8px 0 16px;
+    font-weight: 900;
+    transform-style: preserve-3d;
+    animation: levelPulse 2s ease-in-out infinite;
+  }
+  @keyframes levelPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+  .xp-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .xp-current {
+    font-family: 'Russo One', sans-serif;
+    font-size: 22px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 8px var(--neon-yellow);
+  }
+  .xp-total { color: var(--text-dim); font-size: 14px; }
+  .btn-edit {
+    background: rgba(255, 214, 10, 0.15);
+    border: 1.5px solid var(--neon-yellow);
+    color: var(--neon-yellow);
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Runner track - the GD action zone */
+  .runner-track {
+    position: relative;
+    height: 70px;
+    background: linear-gradient(180deg, rgba(10, 4, 32, 0.8), rgba(30, 15, 74, 0.4));
+    border: 2px solid rgba(0, 240, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .track-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 14px;
+    background: linear-gradient(180deg, var(--neon-cyan), rgba(0, 240, 255, 0.3));
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+  .track-floor::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: white;
+    box-shadow: 0 0 8px white;
+  }
+  .track-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(0,240,255,0.15) 1px, transparent 1px);
+    background-size: 30px 100%;
+    animation: scrollGrid 0.6s linear infinite;
+  }
+  .runner-track.running .track-grid { animation-duration: 0.3s; }
+  @keyframes scrollGrid {
+    from { background-position: 0 0; }
+    to { background-position: -30px 0; }
+  }
+  /* The runner */
+  .runner {
+    position: absolute;
+    left: 50px;
+    bottom: 14px;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    transition: transform 0.15s;
+  }
+  .runner-shape {
+    width: 100%; height: 100%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 16px var(--neon-cyan), 0 0 32px var(--neon-cyan);
+    position: relative;
+  }
+  .runner-shape.cube {
+    border-radius: 4px;
+    background: linear-gradient(135deg, var(--neon-cyan), #0099cc);
+    border: 2px solid white;
+  }
+  .runner-shape.ship {
+    clip-path: polygon(0% 50%, 30% 0%, 100% 30%, 100% 70%, 30% 100%);
+    background: linear-gradient(135deg, var(--neon-pink), #cc1166);
+  }
+  .runner-shape.ball {
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--neon-green), #00aa55);
+    border: 2px solid white;
+  }
+  .runner-shape.ufo {
+    clip-path: polygon(20% 60%, 50% 30%, 80% 60%, 95% 75%, 5% 75%);
+    background: linear-gradient(180deg, var(--neon-purple), #6611aa);
+  }
+  .runner-shape.wave {
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    background: linear-gradient(135deg, var(--neon-orange), var(--neon-yellow));
+  }
+  .runner-track.running .runner {
+    animation: runnerBounce 0.4s ease-in-out infinite;
+  }
+  .runner-track.running .runner-shape.cube,
+  .runner-track.running .runner-shape.ufo {
+    animation: spin 0.6s linear infinite;
+  }
+  .runner-track.running .runner-shape.ball {
+    animation: spin 0.3s linear infinite;
+  }
+  .runner-track.running .runner-shape.ship,
+  .runner-track.running .runner-shape.wave {
+    animation: shipBob 0.5s ease-in-out infinite;
+  }
+  @keyframes runnerBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes shipBob {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+  }
+  /* Particle canvas */
+  #particle-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Progress bar */
+  .progress-shell {
+    position: relative;
+    height: 28px;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green), var(--neon-yellow));
+    box-shadow: 0 0 16px var(--neon-cyan);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 10px,
+      rgba(255,255,255,0.2) 10px,
+      rgba(255,255,255,0.2) 20px
+    );
+    animation: stripeMove 1s linear infinite;
+  }
+  @keyframes stripeMove {
+    to { background-position: 28px 0; }
+  }
+  .progress-text {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Russo One', sans-serif;
+    font-size: 14px;
+    color: white;
+    text-shadow: 0 0 6px black, 0 0 6px black;
+    z-index: 2;
+  }
+
+  /* Timer */
+  .timer-label {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .timer-display {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    text-align: center;
+    color: var(--neon-cyan);
+    text-shadow:
+      0 0 12px var(--neon-cyan),
+      0 0 24px var(--neon-cyan),
+      0 0 36px rgba(0, 240, 255, 0.5);
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Action buttons */
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .btn {
+    padding: 16px 8px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Russo One', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .btn:active:not(:disabled) { transform: translateY(2px); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-start {
+    background: linear-gradient(180deg, #00ff88, #00cc66);
+    color: white;
+    box-shadow: 0 5px 0 #007a3d, 0 0 20px rgba(0, 255, 136, 0.4);
+  }
+  .btn-start:active:not(:disabled) { box-shadow: 0 3px 0 #007a3d, 0 0 20px rgba(0, 255, 136, 0.4); }
+  .btn-pause {
+    background: linear-gradient(180deg, #ffaa00, #ff7700);
+    color: white;
+    box-shadow: 0 5px 0 #aa4400, 0 0 20px rgba(255, 170, 0, 0.4);
+  }
+  .btn-pause:active:not(:disabled) { box-shadow: 0 3px 0 #aa4400, 0 0 20px rgba(255, 170, 0, 0.4); }
+  .btn-stop {
+    background: linear-gradient(180deg, #ff2d92, #cc1166);
+    color: white;
+    box-shadow: 0 5px 0 #800f44, 0 0 20px rgba(255, 45, 146, 0.4);
+  }
+  .btn-stop:active:not(:disabled) { box-shadow: 0 3px 0 #800f44, 0 0 20px rgba(255, 45, 146, 0.4); }
+
+  /* History */
+  .history-card {
+    background: linear-gradient(180deg, rgba(30, 15, 74, 0.6), rgba(20, 10, 50, 0.8));
+    border: 2px solid rgba(0, 240, 255, 0.25);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 24px;
+  }
+  .history-title {
+    font-family: 'Russo One', sans-serif;
+    color: var(--neon-yellow);
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .history-empty {
+    color: var(--text-dim);
+    text-align: center;
+    padding: 16px;
+    font-size: 14px;
+  }
+  .history-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-date { color: var(--text-dim); font-size: 14px; }
+  .history-duration {
+    font-family: 'Russo One', sans-serif;
+    color: var(--neon-yellow);
+    font-size: 15px;
+  }
+
+  /* Level-up overlay */
+  .levelup-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255, 214, 10, 0.3), rgba(0,0,0,0.85));
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+  }
+  .levelup-overlay.show { display: flex; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .levelup-content {
+    text-align: center;
+    animation: levelupBurst 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes levelupBurst {
+    from { transform: scale(0) rotate(-180deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .levelup-text {
+    font-family: 'Russo One', sans-serif;
+    font-size: 48px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 30px var(--neon-yellow), 0 0 60px var(--neon-orange);
+    letter-spacing: 4px;
+  }
+  .levelup-sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    color: white;
+    margin-top: 12px;
+    text-shadow: 0 0 16px var(--neon-cyan);
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 500;
+    padding: 20px;
+    backdrop-filter: blur(6px);
+  }
+  .modal.show { display: flex; }
+  .modal-content {
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border: 2px solid var(--neon-cyan);
+    border-radius: 18px;
+    padding: 24px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 0 32px rgba(0, 240, 255, 0.4);
+  }
+  .modal-title {
+    font-family: 'Russo One', sans-serif;
+    color: var(--neon-yellow);
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .modal input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid rgba(0, 240, 255, 0.3);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .modal input:focus { outline: none; border-color: var(--neon-cyan); }
+  .modal-actions { display: flex; gap: 10px; }
+  .modal-actions .btn { font-size: 15px; padding: 12px 8px; flex: 1; }
+
+  /* Floating XP popup */
+  .xp-pop {
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Russo One', sans-serif;
+    font-size: 20px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 8px var(--neon-yellow);
+    z-index: 20;
+    animation: xpFly 1.2s ease-out forwards;
+  }
+  @keyframes xpFly {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 1; transform: translateY(-10px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-60px) scale(1); }
+  }
+
+  /* Screen shake on level up */
+  @keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2px, -2px); }
+    20% { transform: translate(2px, 2px); }
+    30% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    50% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    70% { transform: translate(-1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    90% { transform: translate(0, 0); }
+  }
+  body.shake { animation: screenShake 0.5s; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="hero" id="heroEl">
-    <div class="av" id="avEl">🦊</div>
-    <div>
-      <div class="hero-name" id="nameEl">小冒险家 <span style="font-size:13px;opacity:0.4">✏️</span></div>
-      <div class="hero-sub" id="subEl">今日学习 0 分钟</div>
+<div class="scanlines"></div>
+
+<main>
+  <!-- User card -->
+  <div class="user-card">
+    <div class="avatar">🦖</div>
+    <div class="user-info">
+      <div class="user-name">Justin <span style="font-size:18px;">✏️</span></div>
+      <div class="user-sub" id="today-study">今日学习 0 分钟</div>
     </div>
   </div>
-  <div class="tabs" id="tabs"></div>
-  <div class="card">
-    <div class="lv-label" id="lvLabel">📖 语文 · LEVEL</div>
-    <div class="lv-num" id="lvNum">1</div>
+
+  <!-- Subject tabs -->
+  <div class="tabs" id="tabs">
+    <button class="tab" data-subject="chinese">📖 语文 <span class="lv-tag">Lv1</span></button>
+    <button class="tab" data-subject="math">📐 数学 <span class="lv-tag">Lv1</span></button>
+    <button class="tab active" data-subject="english">🌍 英语 <span class="lv-tag">Lv1</span></button>
+  </div>
+
+  <!-- Level card -->
+  <div class="level-card">
+    <div class="level-header">
+      <span class="subject-emoji" id="subject-emoji">🌍</span>
+      <span id="subject-name">英语</span> · LEVEL
+    </div>
+    <div class="level-number" id="level-number">1</div>
+
     <div class="xp-row">
-      <span class="xp-cur" id="xpCur">0 XP</span>
-      <span id="xpMax">/ 1800 XP</span>
-      <span class="edit-xp" onclick="openEditXP()">手动修改</span>
+      <span class="xp-current"><span id="xp-current">0</span> XP</span>
+      <span class="xp-total">/ <span id="xp-total">1800</span> XP</span>
+      <button class="btn-edit" id="btn-edit">手动修改</button>
     </div>
-    <div class="bar-bg"><div class="bar-fill" id="barFill"></div><div class="bar-pct" id="barPct">0%</div></div>
-    <div class="timer-wrap">
-      <div class="timer-lbl">本次学习</div>
-      <div class="timer" id="timerEl">00:00</div>
+
+    <!-- Runner track -->
+    <div class="runner-track" id="runner-track">
+      <div class="track-grid"></div>
+      <div class="track-floor"></div>
+      <canvas id="particle-canvas"></canvas>
+      <div class="runner" id="runner">
+        <div class="runner-shape cube" id="runner-shape"></div>
+      </div>
     </div>
-    <div class="btns">
-      <button class="btn btn-s" id="btnS" onclick="doStart()">开始</button>
-      <button class="btn btn-p" id="btnP" onclick="doPause()" disabled>暂停</button>
-      <button class="btn btn-e" id="btnE" onclick="doStop()"  disabled>结束</button>
+
+    <div class="progress-shell">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      <div class="progress-text" id="progress-text">0%</div>
+    </div>
+
+    <div class="timer-label">本次学习</div>
+    <div class="timer-display" id="timer">00:00</div>
+
+    <div class="actions">
+      <button class="btn btn-start" id="btn-start">开始</button>
+      <button class="btn btn-pause" id="btn-pause" disabled>暂停</button>
+      <button class="btn btn-stop" id="btn-stop" disabled>结束</button>
     </div>
   </div>
-  <div class="hist-card">
-    <div class="hist-title">📅 历史记录</div>
-    <div id="histList"></div>
+
+  <!-- History -->
+  <div class="history-card">
+    <div class="history-title">📅 历史记录</div>
+    <div id="history-list"></div>
   </div>
-</div>
+</main>
 
-<div id="lvup" onclick="this.classList.remove('show')">
-  <div style="font-size:44px;font-weight:900;color:#ffd93d;text-shadow:0 0 30px #ffd93d">LEVEL UP! 🎉</div>
-  <div style="font-size:24px;color:#fff">升到 <span style="color:#ffd93d;font-size:56px;font-weight:900" id="lvupNum">2</span> 级！</div>
-  <div style="font-size:13px;color:#aaa;margin-top:8px">点击继续</div>
-</div>
-
-<div class="modal-bg" id="profileModal">
-  <div class="modal">
-    <div class="modal-title">✨ 我的角色</div>
-    <input id="nameIn" maxlength="10" placeholder="名字">
-    <div class="grid g6" id="avPicker"></div>
-    <div class="mbtns">
-      <button class="mbtn mbtn-c" onclick="closeM('profileModal')">取消</button>
-      <button class="mbtn mbtn-o" onclick="saveProfile()">保存</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="subModal">
-  <div class="modal">
-    <div class="modal-title">📚 添加科目</div>
-    <input id="subNameIn" maxlength="6" placeholder="科目名称（如：英语）">
-    <div class="grid g5" id="icPicker"></div>
-    <div class="mbtns">
-      <button class="mbtn mbtn-c" onclick="closeM('subModal')">取消</button>
-      <button class="mbtn mbtn-o" onclick="addSub()">添加</button>
+<!-- Modals -->
+<div class="modal" id="edit-modal">
+  <div class="modal-content">
+    <div class="modal-title">手动修改 XP</div>
+    <input type="number" id="edit-input" placeholder="输入 XP" />
+    <div class="modal-actions">
+      <button class="btn btn-stop" id="edit-cancel">取消</button>
+      <button class="btn btn-start" id="edit-save">保存</button>
     </div>
   </div>
 </div>
 
-<div class="modal-bg" id="xpModal">
-  <div class="modal">
-    <div class="modal-title">⚡ 修改经验值</div>
-    <div style="color:#9b8ec4;font-size:13px;margin-bottom:10px;text-align:center">直接设置当前经验和等级</div>
-    <div style="color:#ffd93d;font-size:12px;margin-bottom:4px">等级</div>
-    <input id="lvIn" type="number" min="1" max="999" placeholder="等级">
-    <div style="color:#ffd93d;font-size:12px;margin-bottom:4px">当前经验 (0 ~ 1800)</div>
-    <input id="xpIn" type="number" min="0" max="1800" placeholder="经验值">
-    <div class="mbtns">
-      <button class="mbtn mbtn-c" onclick="closeM('xpModal')">取消</button>
-      <button class="mbtn mbtn-d" onclick="resetSubject()">重置为0</button>
-      <button class="mbtn mbtn-o" onclick="saveXP()">保存</button>
-    </div>
+<!-- Level up overlay -->
+<div class="levelup-overlay" id="levelup-overlay">
+  <div class="levelup-content">
+    <div class="levelup-text">LEVEL UP!</div>
+    <div class="levelup-sub" id="levelup-sub">LEVEL 2</div>
   </div>
 </div>
 
 <script>
-var AVATARS=['🦊','🐻','🐼','🦁','🐯','🐨','🐰','🦄','🐲','🦖','🐙','🦉','🐢','🦋','⭐','🚀','👑','🎓','🧙','🦸'];
-var ICONS=['📖','📐','🔬','🌍','🎨','🎵','💻','⚽','🧮','📝'];
-var XP_PER_LEVEL=1800;
-
-function load(){try{var r=localStorage.getItem('lq6');if(r)return Object.assign(def(),JSON.parse(r));}catch(e){}return def();}
-function def(){return{name:'小冒险家',avatar:'🦊',active:0,subjects:[{name:'语文',icon:'📖',lv:1,xp:0},{name:'数学',icon:'📐',lv:1,xp:0}],history:[]};}
-function save(){try{localStorage.setItem('lq6',JSON.stringify(D));}catch(e){}}
-function today(){return new Date().toLocaleDateString('zh-CN');}
-
-var D=load();var status='stop';var secs=0;var iv=null;var subjIdx=null;
-
-function render(){
-  var s=D.subjects[D.active]||D.subjects[0];
-  document.getElementById('avEl').textContent=D.avatar;
-  document.getElementById('nameEl').innerHTML=D.name+' <span style="font-size:13px;opacity:0.4">✏️</span>';
-  var tdMins=D.history.filter(function(h){return h.date===today();}).reduce(function(a,h){return a+h.mins;},0);
-  document.getElementById('subEl').textContent='今日学习 '+tdMins+' 分钟';
-  var tabs=document.getElementById('tabs');tabs.innerHTML='';
-  D.subjects.forEach(function(sub,i){
-    var el=document.createElement('div');el.className='tab'+(i===D.active?' on':'');
-    el.textContent=sub.icon+' '+sub.name+' Lv'+sub.lv;
-    el.onclick=function(){switchSub(i);};tabs.appendChild(el);
-  });
-  var add=document.createElement('div');add.className='tab-add';add.textContent='＋';
-  add.onclick=openSubModal;tabs.appendChild(add);
-  var pct=Math.min(100,(s.xp/XP_PER_LEVEL)*100);
-  document.getElementById('lvLabel').textContent=s.icon+' '+s.name+' · LEVEL';
-  document.getElementById('lvNum').textContent=s.lv;
-  document.getElementById('xpCur').textContent=s.xp+' XP';
-  document.getElementById('xpMax').textContent='/ '+XP_PER_LEVEL+' XP';
-  document.getElementById('barFill').style.width=pct+'%';
-  document.getElementById('barPct').textContent=Math.floor(pct)+'%';
-  var hl=document.getElementById('histList');hl.innerHTML='';
-  var rev=D.history.slice().reverse().slice(0,8);
-  if(rev.length===0){hl.innerHTML='<div style="color:#9b8ec4;font-size:13px">还没有记录，快开始学习吧~</div>';return;}
-  rev.forEach(function(h){
-    var row=document.createElement('div');row.className='hist-row';
-    row.innerHTML='<span class="hist-dt">'+h.date+' · '+h.subject+'</span><span class="hist-val">'+h.mins+' 分钟</span>';
-    hl.appendChild(row);
-  });
-}
-function renderTimer(){
-  var mm=String(Math.floor(secs/60)).padStart(2,'0');var ss=String(secs%60).padStart(2,'0');
-  var el=document.getElementById('timerEl');el.textContent=mm+':'+ss;
-  el.className='timer'+(status==='pause'?' paused':'');
-}
-function renderBtns(){
-  document.getElementById('btnS').disabled=status==='run';
-  document.getElementById('btnS').textContent=status==='run'?'学习中':'开始';
-  document.getElementById('btnP').disabled=status==='stop';
-  document.getElementById('btnP').textContent=status==='pause'?'继续':'暂停';
-  document.getElementById('btnE').disabled=status==='stop';
-}
-function tick(){
-  secs++;var s=D.subjects[subjIdx];
-  if(s){
-    s.xp++;
-    if(s.xp>=XP_PER_LEVEL){
-      s.xp=0;s.lv++;
-      document.getElementById('lvupNum').textContent=s.lv;
-      document.getElementById('lvup').classList.add('show');
-      setTimeout(function(){document.getElementById('lvup').classList.remove('show');},2500);
+/* ========== Sound Engine (Web Audio API - no files needed) ========== */
+const SFX = {
+  ctx: null,
+  init() {
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  // GD-style click/start
+  start() {
+    this.init();
+    const t = this.ctx.currentTime;
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = 'square';
+    o.frequency.setValueAtTime(220, t);
+    o.frequency.exponentialRampToValueAtTime(880, t + 0.15);
+    g.gain.setValueAtTime(0.15, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    o.connect(g).connect(this.ctx.destination);
+    o.start(t); o.stop(t + 0.2);
+  },
+  // XP gain ding
+  xp() {
+    this.init();
+    const t = this.ctx.currentTime;
+    [880, 1320].forEach((freq, i) => {
+      const o = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      o.type = 'triangle';
+      o.frequency.setValueAtTime(freq, t + i * 0.04);
+      g.gain.setValueAtTime(0.08, t + i * 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.04 + 0.15);
+      o.connect(g).connect(this.ctx.destination);
+      o.start(t + i * 0.04); o.stop(t + i * 0.04 + 0.15);
+    });
+  },
+  // Pause/Stop
+  pause() {
+    this.init();
+    const t = this.ctx.currentTime;
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(440, t);
+    o.frequency.exponentialRampToValueAtTime(110, t + 0.15);
+    g.gain.setValueAtTime(0.1, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    o.connect(g).connect(this.ctx.destination);
+    o.start(t); o.stop(t + 0.2);
+  },
+  // Level up fanfare
+  levelUp() {
+    this.init();
+    const t = this.ctx.currentTime;
+    const notes = [523, 659, 784, 1047, 1319]; // C E G C E
+    notes.forEach((freq, i) => {
+      const o = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      o.type = 'square';
+      o.frequency.setValueAtTime(freq, t + i * 0.08);
+      g.gain.setValueAtTime(0.12, t + i * 0.08);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.08 + 0.3);
+      o.connect(g).connect(this.ctx.destination);
+      o.start(t + i * 0.08); o.stop(t + i * 0.08 + 0.3);
+    });
+    // bass thump
+    const bass = this.ctx.createOscillator();
+    const bg = this.ctx.createGain();
+    bass.type = 'sine';
+    bass.frequency.setValueAtTime(80, t);
+    bass.frequency.exponentialRampToValueAtTime(40, t + 0.4);
+    bg.gain.setValueAtTime(0.3, t);
+    bg.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    bass.connect(bg).connect(this.ctx.destination);
+    bass.start(t); bass.stop(t + 0.5);
   }
-  renderTimer();render();
+};
+
+/* ========== Data & State ========== */
+const SUBJECTS = {
+  chinese: { name: '语文', emoji: '📖' },
+  math: { name: '数学', emoji: '📐' },
+  english: { name: '英语', emoji: '🌍' }
+};
+const SHAPES = ['cube', 'ship', 'ball', 'ufo', 'wave'];
+const XP_PER_LEVEL = 1800;
+const XP_PER_MINUTE = 73; // matches ~146 XP for 2 min from screenshot
+
+let state = loadState();
+let currentSubject = 'english';
+
+// Timer state
+let timerInterval = null;
+let xpTickInterval = null;
+let shapeSwitchInterval = null;
+let sessionSeconds = 0;
+let isRunning = false;
+let isPaused = false;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('gd_xp_state_v1');
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return {
+    chinese: { xp: 0, history: [] },
+    math: { xp: 0, history: [] },
+    english: { xp: 146, history: [
+      { date: '2026/5/28', minutes: 2 },
+      { date: '2026/5/22', minutes: 1 },
+      { date: '2026/5/21', minutes: 1 }
+    ]}
+  };
 }
-function doStart(){if(status==='stop'){secs=0;subjIdx=D.active;}clearInterval(iv);iv=setInterval(tick,1000);status='run';renderBtns();renderTimer();}
-function doPause(){if(status==='run'){clearInterval(iv);status='pause';}else if(status==='pause'){clearInterval(iv);iv=setInterval(tick,1000);status='run';}renderBtns();renderTimer();}
-function doStop(){
-  clearInterval(iv);
-  if(secs>0&&subjIdx!==null){
-    var name=D.subjects[subjIdx]?D.subjects[subjIdx].name:'';
-    D.history.push({date:today(),subject:name,mins:Math.round(secs/60)||1});
-    if(D.history.length>60)D.history=D.history.slice(-60);
+function saveState() {
+  localStorage.setItem('gd_xp_state_v1', JSON.stringify(state));
+}
+
+/* ========== Rendering ========== */
+function getLevel(xp) { return Math.floor(xp / XP_PER_LEVEL) + 1; }
+function getXpInLevel(xp) { return xp % XP_PER_LEVEL; }
+function getProgress(xp) { return Math.min(100, (getXpInLevel(xp) / XP_PER_LEVEL) * 100); }
+
+function render() {
+  const subj = state[currentSubject];
+  const xp = subj.xp;
+  const level = getLevel(xp);
+  const xpIn = getXpInLevel(xp);
+  const pct = getProgress(xp);
+
+  document.getElementById('level-number').textContent = level;
+  document.getElementById('xp-current').textContent = xpIn;
+  document.getElementById('xp-total').textContent = XP_PER_LEVEL;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = Math.floor(pct) + '%';
+  document.getElementById('subject-name').textContent = SUBJECTS[currentSubject].name;
+  document.getElementById('subject-emoji').textContent = SUBJECTS[currentSubject].emoji;
+
+  // Tab levels
+  document.querySelectorAll('.tab').forEach(t => {
+    const s = t.dataset.subject;
+    const lv = getLevel(state[s].xp);
+    t.querySelector('.lv-tag').textContent = 'Lv' + lv;
+    t.classList.toggle('active', s === currentSubject);
+  });
+
+  // History
+  const hist = subj.history.slice().reverse();
+  const list = document.getElementById('history-list');
+  if (hist.length === 0) {
+    list.innerHTML = '<div class="history-empty">还没有记录 — 开始学习吧!</div>';
+  } else {
+    list.innerHTML = hist.slice(0, 10).map(h =>
+      `<div class="history-item">
+        <span class="history-date">${h.date} · ${SUBJECTS[currentSubject].name}</span>
+        <span class="history-duration">${h.minutes} 分钟</span>
+      </div>`
+    ).join('');
   }
-  secs=0;status='stop';subjIdx=null;save();render();renderTimer();renderBtns();
-}
-function switchSub(i){
-  if(status!=='stop'&&!confirm('切换科目会停止计时，确认吗？'))return;
-  if(status!=='stop')doStop();D.active=i;save();render();
-}
-function openEditXP(){
-  var s=D.subjects[D.active];
-  document.getElementById('lvIn').value=s.lv;document.getElementById('xpIn').value=s.xp;
-  document.getElementById('xpModal').classList.add('show');
-}
-function saveXP(){
-  var s=D.subjects[D.active];
-  var lv=parseInt(document.getElementById('lvIn').value)||1;
-  var xp=parseInt(document.getElementById('xpIn').value)||0;
-  s.lv=Math.max(1,lv);s.xp=Math.max(0,Math.min(XP_PER_LEVEL-1,xp));
-  save();render();closeM('xpModal');
-}
-function resetSubject(){var s=D.subjects[D.active];s.lv=1;s.xp=0;save();render();closeM('xpModal');}
-var selAv='🦊';
-function openProfile(){
-  document.getElementById('nameIn').value=D.name;selAv=D.avatar;
-  var pk=document.getElementById('avPicker');pk.innerHTML='';
-  AVATARS.forEach(function(a){
-    var el=document.createElement('div');el.className='pi'+(a===selAv?' sel':'');el.textContent=a;
-    el.onclick=function(){selAv=a;document.querySelectorAll('#avPicker .pi').forEach(function(x){x.classList.remove('sel');});el.classList.add('sel');};
-    pk.appendChild(el);
+
+  // Today's total across all subjects
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
+  let todayMin = 0;
+  Object.values(state).forEach(s => {
+    s.history.forEach(h => { if (h.date === todayStr) todayMin += h.minutes; });
   });
-  document.getElementById('profileModal').classList.add('show');
+  document.getElementById('today-study').textContent = `今日学习 ${todayMin} 分钟`;
 }
-function saveProfile(){var n=document.getElementById('nameIn').value.trim();if(n)D.name=n;D.avatar=selAv;save();render();closeM('profileModal');}
-var selIc='📖';
-function openSubModal(){
-  document.getElementById('subNameIn').value='';selIc='📖';
-  var pk=document.getElementById('icPicker');pk.innerHTML='';
-  ICONS.forEach(function(ic){
-    var el=document.createElement('div');el.className='pi'+(ic===selIc?' sel':'');el.textContent=ic;el.style.fontSize='24px';
-    el.onclick=function(){selIc=ic;document.querySelectorAll('#icPicker .pi').forEach(function(x){x.classList.remove('sel');});el.classList.add('sel');};
-    pk.appendChild(el);
+
+/* ========== Runner shape switching ========== */
+function setRandomShape() {
+  const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+  const el = document.getElementById('runner-shape');
+  el.className = 'runner-shape ' + shape;
+}
+
+/* ========== Particle system ========== */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() {
+  const track = document.getElementById('runner-track');
+  canvas.width = track.offsetWidth;
+  canvas.height = track.offsetHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function spawnTrailParticle() {
+  const runner = document.getElementById('runner');
+  const x = runner.offsetLeft + 16;
+  const y = canvas.height - 30;
+  const colors = ['#00f0ff', '#ff2d92', '#ffd60a', '#00ff88', '#b537f2'];
+  particles.push({
+    x, y,
+    vx: -(1 + Math.random() * 2),
+    vy: (Math.random() - 0.5) * 1,
+    life: 1,
+    size: 3 + Math.random() * 4,
+    color: colors[Math.floor(Math.random() * colors.length)]
   });
-  document.getElementById('subModal').classList.add('show');
 }
-function addSub(){
-  var n=document.getElementById('subNameIn').value.trim();
-  if(!n){alert('请输入科目名称');return;}
-  D.subjects.push({name:n,icon:selIc,lv:1,xp:0});D.active=D.subjects.length-1;
-  save();render();closeM('subModal');
+function spawnBurstParticles(cx, cy, count = 20) {
+  const colors = ['#00f0ff', '#ff2d92', '#ffd60a', '#00ff88', '#b537f2', '#ff6b35'];
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count;
+    const speed = 2 + Math.random() * 3;
+    particles.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      size: 4 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
 }
-function closeM(id){document.getElementById(id).classList.remove('show');}
-document.getElementById('heroEl').onclick=openProfile;
-render();renderTimer();renderBtns();
+
+function tickParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life -= 0.025;
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = p.color;
+    ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+  });
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
+  requestAnimationFrame(tickParticles);
+}
+tickParticles();
+
+/* ========== XP popup ========== */
+function showXpPop(amount) {
+  const track = document.getElementById('runner-track');
+  const pop = document.createElement('div');
+  pop.className = 'xp-pop';
+  pop.textContent = '+' + amount + ' XP';
+  pop.style.left = (50 + Math.random() * 200) + 'px';
+  pop.style.top = '10px';
+  track.appendChild(pop);
+  setTimeout(() => pop.remove(), 1200);
+}
+
+/* ========== Timer & XP loop ========== */
+function startTimer() {
+  if (isRunning && !isPaused) return;
+  SFX.start();
+
+  if (!isRunning) {
+    // Fresh start
+    sessionSeconds = 0;
+    setRandomShape();
+  }
+  isRunning = true;
+  isPaused = false;
+
+  document.getElementById('runner-track').classList.add('running');
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('btn-pause').disabled = false;
+  document.getElementById('btn-stop').disabled = false;
+
+  timerInterval = setInterval(() => {
+    sessionSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+
+  // Trail particles
+  if (!window.trailInterval) {
+    window.trailInterval = setInterval(spawnTrailParticle, 60);
+  }
+
+  // Shape rotation every 8 seconds
+  shapeSwitchInterval = setInterval(setRandomShape, 8000);
+
+  // XP tick - give XP every 5 seconds while running
+  xpTickInterval = setInterval(() => {
+    const beforeLevel = getLevel(state[currentSubject].xp);
+    const gain = Math.round(XP_PER_MINUTE / 12); // every 5s
+    state[currentSubject].xp += gain;
+    saveState();
+    showXpPop(gain);
+    SFX.xp();
+    render();
+    const afterLevel = getLevel(state[currentSubject].xp);
+    if (afterLevel > beforeLevel) triggerLevelUp(afterLevel);
+  }, 5000);
+}
+
+function pauseTimer() {
+  if (!isRunning || isPaused) return;
+  SFX.pause();
+  isPaused = true;
+  clearInterval(timerInterval);
+  clearInterval(xpTickInterval);
+  clearInterval(shapeSwitchInterval);
+  clearInterval(window.trailInterval);
+  window.trailInterval = null;
+  document.getElementById('runner-track').classList.remove('running');
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-pause').disabled = true;
+}
+
+function stopTimer() {
+  if (!isRunning) return;
+  SFX.pause();
+  const minutes = Math.max(1, Math.round(sessionSeconds / 60));
+  // Record history
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
+  state[currentSubject].history.push({ date: dateStr, minutes });
+  saveState();
+
+  // Cleanup
+  clearInterval(timerInterval);
+  clearInterval(xpTickInterval);
+  clearInterval(shapeSwitchInterval);
+  clearInterval(window.trailInterval);
+  window.trailInterval = null;
+  isRunning = false;
+  isPaused = false;
+  sessionSeconds = 0;
+  updateTimerDisplay();
+
+  document.getElementById('runner-track').classList.remove('running');
+  document.getElementById('btn-start').disabled = false;
+  document.getElementById('btn-pause').disabled = true;
+  document.getElementById('btn-stop').disabled = true;
+  render();
+}
+
+function updateTimerDisplay() {
+  const m = String(Math.floor(sessionSeconds / 60)).padStart(2, '0');
+  const s = String(sessionSeconds % 60).padStart(2, '0');
+  document.getElementById('timer').textContent = `${m}:${s}`;
+}
+
+/* ========== Level up celebration ========== */
+function triggerLevelUp(newLevel) {
+  SFX.levelUp();
+  document.body.classList.add('shake');
+  setTimeout(() => document.body.classList.remove('shake'), 500);
+
+  // Massive particle burst
+  const track = document.getElementById('runner-track');
+  spawnBurstParticles(canvas.width / 2, canvas.height / 2, 40);
+
+  const overlay = document.getElementById('levelup-overlay');
+  document.getElementById('levelup-sub').textContent = 'LEVEL ' + newLevel;
+  overlay.classList.add('show');
+  setTimeout(() => overlay.classList.remove('show'), 2000);
+}
+
+/* ========== Event wiring ========== */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    if (isRunning) return; // don't switch mid-session
+    currentSubject = t.dataset.subject;
+    SFX.start();
+    render();
+  });
+});
+
+document.getElementById('btn-start').addEventListener('click', startTimer);
+document.getElementById('btn-pause').addEventListener('click', pauseTimer);
+document.getElementById('btn-stop').addEventListener('click', stopTimer);
+
+// Edit XP modal
+const editModal = document.getElementById('edit-modal');
+document.getElementById('btn-edit').addEventListener('click', () => {
+  document.getElementById('edit-input').value = state[currentSubject].xp;
+  editModal.classList.add('show');
+});
+document.getElementById('edit-cancel').addEventListener('click', () => editModal.classList.remove('show'));
+document.getElementById('edit-save').addEventListener('click', () => {
+  const v = parseInt(document.getElementById('edit-input').value, 10);
+  if (!isNaN(v) && v >= 0) {
+    const before = getLevel(state[currentSubject].xp);
+    state[currentSubject].xp = v;
+    saveState();
+    const after = getLevel(state[currentSubject].xp);
+    render();
+    if (after > before) triggerLevelUp(after);
+    SFX.xp();
+  }
+  editModal.classList.remove('show');
+});
+
+// Tap anywhere first time to unlock audio (mobile requirement)
+document.addEventListener('touchstart', () => SFX.init(), { once: true });
+document.addEventListener('click', () => SFX.init(), { once: true });
+
+// Init
+resizeCanvas();
+render();
+setRandomShape();
 </script>
 </body>
 </html>
